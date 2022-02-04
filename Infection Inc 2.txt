@@ -1,0 +1,106 @@
+local s,f = pcall(function()
+	local ShitLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Sniperkaos/ShitLib/main/ShitLib.lua"))()
+	local RunService = game:GetService("RunService")
+	local Main
+	local ps = game:GetService("Players")
+	Main =  ShitLib:CreateGui(game:GetService("CoreGui"),"Rad1ative Memorial Cheat (Limited Edition)")
+	local uis = game:GetService("UserInputService")
+	local WindowTwo = ShitLib:CreateDraggableWindow(Main,UDim2.new(0.3,0,0,0),"Miscellaneous",UDim2.new(0.15,0,0.4,0))
+	local WindowFive = ShitLib:CreateDraggableWindow(Main,UDim2.new(0.8,0,0,0),"Credits",UDim2.new(0.2,0,0.5,0))
+	local ver = "1.0.0"
+	local TextObject = ShitLib:CreateTextObject(WindowFive,UDim2.new(1,0,1,0),[[
+		Special Thanks to Real Hunter Lee Chambers.
+		If you have any concerns, please email him at
+		RealHunterLeeChambers@askusabouttaxes.com
+	]])
+	local Buttons = {}
+	function GetCurrentWeapon()
+		return workspace.Players:WaitForChild(ps.LocalPlayer.Name):FindFirstChildOfClass("Tool")
+	end
+	function GetTycoon(Player)
+		for i,v in pairs(workspace:GetChildren()) do
+			if string.match(v.Name,"Tycoon") ~= nil then
+				if v.Owner.Value == Player.Name then
+					return v 
+				end
+			end
+		end
+	end
+	function Manual(Object)
+		if string.match(Object.Name,"Manual") ~= nil then
+			local cd = Object:FindFirstChild("HitDetect")
+			coroutine.wrap(function()
+				while wait() do
+					fireclickdetector(cd.ClickDetector)
+				end 
+			end)()
+		end
+	end
+	Buttons[1] = ShitLib:CreateButton(UDim2.new(0.5,0,0.1,0),"Kill Everything",function()
+		for i,v in pairs(workspace:GetDescendants()) do
+			if v:IsA("Humanoid") and v.Parent.Name ~= "Sniperkaos" then
+				game.ReplicatedStorage.Hurt:FireServer(9999,v)
+			end
+		end
+	end,WindowTwo)
+	Buttons[2] = ShitLib:CreateButton(UDim2.new(0.5,0,0.1,0),"Upgrade Weapon",function()
+		local Weapon = GetCurrentWeapon()
+		if Weapon and Weapon:FindFirstChildOfClass("LocalScript") then
+			local Environment = getsenv(Weapon:FindFirstChildOfClass("LocalScript"))
+			if Environment.damage then
+				Environment.damage = 9999
+			end
+			if Environment.MaxRange then
+				Environment.MaxRange = 9999
+			end
+			if Environment.Accuracy then
+				Environment.Accuracy = 0
+			end
+		end
+	end,WindowTwo)
+	Buttons[3] = ShitLib:CreateButton(UDim2.new(0.5,0,0.1,0),"God LocalPlayer (DO NOT SPAM!)",function()
+		local LocalPlayer = workspace.Players[ps.LocalPlayer.Name]
+		if LocalPlayer then
+			LocalPlayer:FindFirstChildOfClass("Humanoid").HealthChanged:Connect(function()
+				game.ReplicatedStorage.Hurt:FireServer(-100,LocalPlayer:FindFirstChildOfClass("Humanoid"))
+			end)
+		end
+	end,WindowTwo)
+	Buttons[4] = ShitLib:CreateButton(UDim2.new(0.5,0,0.1,0),"God Zombies",function()
+		for i,v in pairs(workspace.Zombies:GetChildren()) do
+			if string.match(v.Name,ps.LocalPlayer.Name) ~= nil then
+				v:FindFirstChildOfClass("Humanoid").HealthChanged:Connect(function()
+					game.ReplicatedStorage.Hurt:FireServer(-100,v:FindFirstChildOfClass("Humanoid"))
+				end) 
+			end
+		end
+		workspace.Zombies.ChildAdded:Connect(function(v)
+			if string.match(v.Name,ps.LocalPlayer.Name) ~= nil then
+				v:FindFirstChildOfClass("Humanoid").HealthChanged:Connect(function()
+					game.ReplicatedStorage.Hurt:FireServer(-100,v:FindFirstChildOfClass("Humanoid"))
+				end) 
+			end
+		end)
+	end,WindowTwo)
+	Buttons[5] = ShitLib:CreateButton(UDim2.new(0.5,0,0.1,0),"Auto-Spawn Manual Zombies",function()
+		local Tycoon = GetTycoon(ps.LocalPlayer)
+		print(Tycoon)
+		if Tycoon then
+			Tycoon.Purchased.ChildAdded:Connect(function(child)
+				Manual(child) 
+			end)
+			for i,v in pairs(Tycoon.Purchased:GetChildren()) do
+				Manual(v)
+			end
+		end
+	end,WindowTwo)
+	ShitLib:MakeVisible(WindowTwo)
+	coroutine.wrap(function()
+		ShitLib:MakeVisible(WindowFive)
+		task.wait(9)
+		ShitLib:MakeInvisible(WindowFive)
+	end)()
+end)
+if f then
+	writefile("error.txt", tostring(f))  
+end
