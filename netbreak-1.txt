@@ -1,0 +1,11 @@
+for _,Target in pairs(game.Players:GetPlayers()) do
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if game.Players[Target.Name].Character then
+            for _,Children in pairs(game.Players[Target.Name].Character:GetDescendants()) do
+                if Children:IsA("Part") or Children:IsA("BasePart") then
+                    sethiddenproperty(Children, "NetworkIsSleeping", true)
+                end
+            end
+        end
+    end)
+end
