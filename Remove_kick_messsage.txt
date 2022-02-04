@@ -1,0 +1,2 @@
+game.CoreGui.RobloxGui:Destroy()
+game.CoreGui.RobloxPromptGui:Destroy()
