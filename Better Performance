@@ -1,0 +1,47 @@
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+local Atmosphere = Instance.new("Atmosphere")
+Atmosphere.Offset = 0.25
+Atmosphere.Color = Color3.fromRGB(199, 199, 199)
+Atmosphere.Decay = Color3.fromRGB(106, 112, 125)
+Atmosphere.Density = 0.3
+
+Atmosphere.Parent = game:GetService("Lighting")
+local Bloom = Instance.new("BloomEffect")
+Bloom.Intensity = 1
+Bloom.Threshold = 2
+
+Bloom.Parent = game:GetService("Lighting")
+local DepthOfField = Instance.new("DepthOfFieldEffect")
+DepthOfField.FarIntensity = 0.229
+DepthOfField.FocusDistance = 58.3400002
+DepthOfField.InFocusRadius = 30
+DepthOfField.NearIntensity = 0
+
+DepthOfField.Parent = game:GetService("Lighting")
+local Sky = Instance.new("Sky")
+Sky.SkyboxUp = "rbxassetid://6412503613"
+Sky.MoonTextureId = "rbxassetid://6444320592"
+Sky.SkyboxLf = "rbxassetid://6444884337"
+Sky.SkyboxBk = "rbxassetid://6444884337"
+Sky.SkyboxFt = "rbxassetid://6444884337"
+Sky.SkyboxDn = "rbxassetid://6444884785"
+Sky.SunTextureId = "rbxassetid://6196665106"
+Sky.SunAngularSize = 11
+Sky.SkyboxRt = "rbxassetid://6444884337"
+
+Sky.Parent = game:GetService("Lighting")
+local SunRays = Instance.new("SunRaysEffect")
+SunRays.Intensity = 0.063
+SunRays.Spread = 0.146
+
+SunRays.Parent = game:GetService("Lighting")
+game:GetService("Lighting").ClockTime = 7
+local L = game:GetService("Lighting")
+L.ColorShift_Bottom = Color3.fromRGB(182, 182, 182)
+L.ColorShift_Top = Color3.fromRGB(255, 91, 58)
+L.Brightness = 3
+L.GlobalShadows = true
+L.ShadowSoftness = 0
+L.OutdoorAmbient = Color3.fromRGB(111, 30, 100)
